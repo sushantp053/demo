@@ -1,6 +1,7 @@
 import 'package:demo/register.dart';
 import 'package:flutter/material.dart';
 
+import 'home.dart';
 import 'main.dart';
 import 'util/DatabaseHelper.dart';
 
@@ -16,7 +17,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
+      appBar: AppBar(title: Text("Login"),),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -24,13 +25,6 @@ class _LoginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "mDairy",
-                style: TextStyle(
-                    fontSize: 34,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
               SizedBox(
                 height: 20,
               ),
@@ -124,8 +118,8 @@ class _LoginState extends State<Login> {
     int x = await databaseHelper.checkAccountLogin("$userName", "$password");
 
     if (x > 0) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Home()));
     } else {
       _showLoginErrorDialog();
     }

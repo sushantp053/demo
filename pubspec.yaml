@@ -34,6 +34,8 @@ dependencies:
   path_provider:
   image_picker:
   image_cropper:
+  flutter_calendar_carousel:
+  flutter_svg:
 
 dev_dependencies:
   flutter_test:

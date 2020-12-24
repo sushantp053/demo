@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:demo/login.dart';
+import 'package:demo/model/Hobbies.dart';
+import 'package:demo/model/user.dart';
+import 'package:demo/util/DatabaseHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -16,14 +20,16 @@ class _RegisterState extends State<Register> {
   DateTime selectedDate = DateTime.now();
   int ds = 0;
   List<String> hobbieList = [];
+  DatabaseHelper databaseHelper = DatabaseHelper();
 
   TextEditingController controllerHobie;
 
-  changeHobbieText(){
+  changeHobbieText() {
     setState(() {
-      controllerHobie.text = "";
+      controllerHobie = TextEditingController(text: "");
     });
   }
+
   Future<void> _pickImage(ImageSource source) async {
     File selected = await ImagePicker.pickImage(source: source);
 
@@ -33,11 +39,12 @@ class _RegisterState extends State<Register> {
     _cropImage();
   }
 
-  removeHobbie(int index){
+  removeHobbie(int index) {
     setState(() {
       hobbieList.removeAt(index);
     });
   }
+
   getSelectedDate() {
     int day;
     int month;
@@ -111,9 +118,9 @@ class _RegisterState extends State<Register> {
                       child: _imageFile != null
                           ? Image.file(_imageFile)
                           : Text(
-                              "No Image Selected",
-                              style: TextStyle(fontSize: 20),
-                            )),
+                        "No Image Selected",
+                        style: TextStyle(fontSize: 20),
+                      )),
                 ),
               ),
             ),
@@ -169,6 +176,9 @@ class _RegisterState extends State<Register> {
                 hintStyle: new TextStyle(color: Colors.grey[800]),
                 hintText: "Name",
                 fillColor: Colors.white70),
+            onChanged: (text) {
+              userName = text;
+            },
           ),
           SizedBox(
             height: 10,
@@ -183,8 +193,8 @@ class _RegisterState extends State<Register> {
                   color: Colors.black54,
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(
-                        10.0) //                 <--- border radius here
-                    ),
+                    10.0) //                 <--- border radius here
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -247,7 +257,9 @@ class _RegisterState extends State<Register> {
           //   },
           // ),
           RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              saveData();
+            },
             color: Colors.redAccent,
             child: Text(
               "Save",
@@ -257,5 +269,39 @@ class _RegisterState extends State<Register> {
         ],
       ),
     );
+  }
+
+  saveData() {
+    if (email != null && userName != null && password !=null) {
+      User u = new User(userName, password, email, dob, _imageFile.toString());
+      Hobbies h = new Hobbies("hobbieList[0]", 1);
+      databaseHelper.insertUser(u);
+      databaseHelper.insertHobbie(h);
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Login()));
+    } else {
+      _showAccountErrorDialog();
+    }
+  }
+
+  void _showAccountErrorDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Enter all details"),
+            content: Text("Select all details"),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text("Ok"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            ],
+          );
+        });
   }
 }

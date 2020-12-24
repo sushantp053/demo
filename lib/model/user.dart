@@ -1,6 +1,5 @@
 
 class User {
-  // img TEXT
   int _id;
   String _name;
   String _pass;

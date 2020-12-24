@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:demo/model/Hobbies.dart';
 import 'package:demo/model/user.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -49,14 +50,20 @@ String tblMemMast = "userMast";
 
   Future<int> insertUser(User user) async {
     Database db = await this.database;
-    var result = await db.insert('user', user.toMap());
+    var result = await db.insert('$tblMemMast', user.toMap());
+    return result;
+  }
+
+  Future<int> insertHobbie(Hobbies hobbies) async {
+    Database db = await this.database;
+    var result = await db.insert('$tblHobbies', hobbies.toMap());
     return result;
   }
 
   checkAccountLogin(String user, String password) async {
     Database db = await this.database;
     List<Map<String, dynamic>> x =
-    await db.rawQuery('SELECT COUNT (*) from user WHERE userid = "$user" AND pass = "$password"');
+    await db.rawQuery('SELECT COUNT (*) from $tblMemMast WHERE email = "$user" AND pass = "$password"');
     int result = Sqflite.firstIntValue(x);
 
     return result;
