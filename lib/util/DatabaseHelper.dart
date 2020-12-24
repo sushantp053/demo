@@ -36,34 +36,13 @@ class DatabaseHelper {
     return accountDatabase;
   }
 String tblMemMast = "userMast";
+  String tblHobbies = "hobbies";
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE $tblMemMast (id INTEGER PRIMARY KEY,code INTEGER, name TEXT, brancode INTEGER, totalcow INTEGER, totalbuf INTEGER, mobile TEXT)');
+        'CREATE TABLE $tblHobbies (id INTEGER PRIMARY KEY, userId INTEGER, hobby TEXT)');
+    await db.execute(
+        'CREATE TABLE $tblMemMast (id INTEGER PRIMARY KEY, name TEXT, email TEXT, pass TEXT, dob TEXT, img TEXT)');
 
-  }
-
-  // Fetch Operation: Get all todo objects from database
-  Future<List<Map<String, dynamic>>> getMemMapList() async {
-    Database db = await this.database;
-    var result = await db.query('$tblMemMast');
-    return result;
-  }
-
-  Future<List<Map<String, dynamic>>> getGLMapList() async {
-    Database db = await this.database;
-    var result = await db.query('GL');
-    return result;
-  }
-  Future<List<Map<String, dynamic>>> getCollectionMapList() async {
-    Database db = await this.database;
-
-    var result = await db.query('PCRX');
-    return result;
-  }
-  Future<List<Map<String, dynamic>>> getUserMapList() async {
-    Database db = await this.database;
-    var result = await db.query('ACCOUNT');
-    return result;
   }
 
   // Insert Operation: Insert a todo object to database
@@ -82,4 +61,5 @@ String tblMemMast = "userMast";
 
     return result;
   }
+
 }

@@ -1,21 +1,26 @@
 
 class User {
+  // img TEXT
   int _id;
   String _name;
   String _pass;
-  String _userid;
+  String _email;
+  String _dob;
+  String _img;
 
 
-  User(this._name, this._pass, this._userid);
+  User(this._name, this._pass, this._email, this._dob,this._img);
 
-  User.withId(this._id, this._name, this._pass,this._userid);
+  User.withId(this._id, this._name, this._pass,this._email, this._dob, this._img);
 
   int get id => _id;
 
   String get pass => _pass;
+  String get dob => _dob;
+  String get img => _img;
 
   String get name => _name;
-  String get userid => _userid;
+  String get email => _email;
 
   set name(String newName) {
     if (newName.length <= 255) {
@@ -27,9 +32,19 @@ class User {
       this._pass = newPass;
     }
   }
-  set userid(String newId) {
+  set dob(String newdob) {
+    if (newdob.length <= 255) {
+      this._pass = newdob;
+    }
+  }
+  set img(String newImg) {
+    if (newImg.length <= 255) {
+      this._pass = newImg;
+    }
+  }
+  set email(String newId) {
     if (newId.length <= 255) {
-      this._userid = newId;
+      this._email = newId;
     }
   }
 
@@ -41,7 +56,9 @@ class User {
     }
     map['name'] = _name;
     map['pass'] = _pass;
-    map['userid'] = _userid;
+    map['email'] = _email;
+    map['dob'] = _dob;
+    map['img'] = _img;
 
     return map;
   }
@@ -51,6 +68,8 @@ class User {
     this._id = map['id'];
     this._name = map['name'];
     this._pass = map['pass'];
-    this._userid = map['userid'];
+    this._email = map['email'];
+    this._dob = map['dob'];
+    this._img = map['img'];
   }
 }
